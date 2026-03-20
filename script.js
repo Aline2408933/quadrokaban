@@ -1,11 +1,10 @@
-/**
- * Gerenciamento de Estado e Manipulação do DOM
- */
 const taskInput = document.getElementById('taskInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const dropzones = document.querySelectorAll('.dropzone');
 
-// 1. Adicionar novo card
+let draggedCard = null;
+
+// Adicionar card
 addTaskBtn.addEventListener('click', () => {
     const text = taskInput.value.trim();
     if (text) {
@@ -20,7 +19,7 @@ function createCard(text, columnId) {
     card.draggable = true;
     card.innerText = text;
 
-    // Evento de edição (Double Click)
+    // ✏️ Editar card
     card.addEventListener('dblclick', () => {
         const input = document.createElement('input');
         input.value = card.innerText;
@@ -33,7 +32,7 @@ function createCard(text, columnId) {
         });
     });
 
-    // 2. Drag and Drop API
+    // 🖱️ DRAG (PC)
     card.addEventListener('dragstart', () => {
         card.classList.add('dragging');
     });
@@ -42,14 +41,42 @@ function createCard(text, columnId) {
         card.classList.remove('dragging');
     });
 
+    // 📱 TOUCH (CELULAR)
+
+    card.addEventListener('touchstart', () => {
+        draggedCard = card;
+        card.classList.add('dragging');
+    });
+
+    card.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+
+        const touch = e.touches[0];
+        const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+
+        const dropzone = elementBelow?.closest('.dropzone');
+        if (dropzone && draggedCard) {
+            dropzone.appendChild(draggedCard);
+        }
+    });
+
+    card.addEventListener('touchend', () => {
+        if (draggedCard) {
+            draggedCard.classList.remove('dragging');
+            draggedCard = null;
+        }
+    });
+
     document.getElementById(columnId).appendChild(card);
 }
 
-// 3. Lógica das Dropzones
+// Dropzones (PC)
 dropzones.forEach(zone => {
     zone.addEventListener('dragover', (e) => {
-        e.preventDefault(); // Necessário para permitir o drop
+        e.preventDefault();
         const draggingCard = document.querySelector('.dragging');
-        zone.appendChild(draggingCard);
+        if (draggingCard) {
+            zone.appendChild(draggingCard);
+        }
     });
 });
