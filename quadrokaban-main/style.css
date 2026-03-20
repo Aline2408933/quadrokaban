@@ -1,0 +1,109 @@
+body {
+    /* Fonte base e cor de fundo do app */
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 10px;
+}
+
+header {
+    /* Cabeçalho centralizado com título e controles */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.controls {
+    /* Área dos controles: input + botões */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+#taskInput {
+    /* Input responsivo para nova tarefa */
+    flex: 1 1 200px;
+    padding: 8px;
+}
+
+button {
+    /* Estilo básico de botão */
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.kanban-board {
+    /* Grid responsivo para colunas do quadro */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.column {
+    /* Cada coluna do Kanban */
+    background-color: #ebedf0;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 300px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dropzone {
+    /* Área interna onde os cards ficam / aceitam drop */
+    min-height: 250px;
+}
+
+/* Cards */
+.card {
+    /* Aparência do card (tarefa) */
+    background: white;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    cursor: grab;
+    transition: transform 0.2s;
+
+    /* Importante para gestos em touch devices */
+    touch-action: none;
+}
+
+.card:active {
+    /* Cursor ao arrastar no desktop */
+    cursor: grabbing;
+}
+
+.card.dragging {
+    /* Estado visual do card enquanto arrastado */
+    opacity: 0.5;
+    border: 2px dashed #007bff;
+}
+
+.card input {
+    /* Input interno para edição inline de título */
+    width: 100%;
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+/* Texto do card separado para facilitar edição */
+.card .card-text {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+/* Botão de excluir dentro do card */
+.card .delete-btn {
+    background: transparent;
+    border: none;
+    color: #c00;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.card .delete-btn:hover {
+    background: rgba(200,0,0,0.06);
+}
