@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  Quadro Kanban simples
+  - `controls`: input para nova tarefa + botão de adicionar
+  - `kanban-board`: contém 3 colunas com dropzones (todo, doing, done)
+  Os cards são gerados dinamicamente por `script.js`.
+-->
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -7,31 +13,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Cabeçalho com título e controles de criação de card -->
     <header>
         <h1>Quadro Kanban</h1>
         <div class="controls">
+            <!-- Input para inserir o texto da nova tarefa -->
             <input type="text" id="taskInput" placeholder="Nova tarefa...">
+            <!-- Botão que aciona a criação do card -->
             <button id="addTaskBtn">Adicionar Card</button>
         </div>
     </header>
 
+    <!-- Área principal: 3 colunas do Kanban -->
     <main class="kanban-board">
         <div class="column" data-status="todo">
             <h2>A Fazer</h2>
+            <!-- Dropzone para cards 'A Fazer' -->
             <div class="dropzone" id="todo"></div>
         </div>
 
         <div class="column" data-status="doing">
             <h2>Fazendo</h2>
+            <!-- Dropzone para cards 'Fazendo' -->
             <div class="dropzone" id="doing"></div>
         </div>
 
         <div class="column" data-status="done">
             <h2>Concluído</h2>
+            <!-- Dropzone para cards 'Concluído' -->
             <div class="dropzone" id="done"></div>
         </div>
     </main>
 
+    <!-- Script que cria, edita, arrasta e exclui cards -->
     <script src="script.js"></script>
 </body>
 </html>

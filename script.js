@@ -1,10 +1,12 @@
+// Seleção de elementos importantes
 const taskInput = document.getElementById('taskInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const dropzones = document.querySelectorAll('.dropzone');
 
+// Variável auxiliar usada para arrastar em touch e desktop
 let draggedCard = null;
 
-// Adicionar card
+// Evento: ao clicar no botão de adicionar, cria um novo card na coluna 'todo'
 addTaskBtn.addEventListener('click', () => {
     const text = taskInput.value.trim();
     if (text) {
@@ -13,36 +15,67 @@ addTaskBtn.addEventListener('click', () => {
     }
 });
 
+/**
+ * Cria um card com texto e adiciona na coluna indicada.
+ * Cada card contém:
+ * - um elemento `.card-text` com o título
+ * - um botão `.delete-btn` para remover o card
+ * - suporte a edição com duplo clique
+ * - suporte a drag (desktop) e touch (celular)
+ */
 function createCard(text, columnId) {
     const card = document.createElement('div');
     card.classList.add('card');
     card.draggable = true;
-    card.innerText = text;
 
-    // ✏️ Editar card
+    // Texto do card (separado para facilitar edição)
+    const textSpan = document.createElement('span');
+    textSpan.classList.add('card-text');
+    textSpan.innerText = text;
+
+    // Botão de excluir
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.setAttribute('aria-label', 'Excluir tarefa');
+    deleteBtn.innerText = '✕';
+
+    // Evita que o clique no botão dispare eventos pais (ex.: edição ou drag)
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        card.remove();
+    });
+
+    // Edição inline: duplo clique substitui o texto por um input
     card.addEventListener('dblclick', () => {
         const input = document.createElement('input');
-        input.value = card.innerText;
+        input.value = textSpan.innerText;
+        // Substitui apenas o conteúdo de texto, preservando o botão de excluir
         card.innerHTML = '';
         card.appendChild(input);
+        card.appendChild(deleteBtn);
         input.focus();
 
         input.addEventListener('blur', () => {
-            card.innerText = input.value || "Tarefa sem nome";
+            textSpan.innerText = input.value || 'Tarefa sem nome';
+            // Reconstroi o conteúdo do card (texto + botão)
+            card.innerHTML = '';
+            card.appendChild(textSpan);
+            card.appendChild(deleteBtn);
         });
     });
 
-    // 🖱️ DRAG (PC)
+    // Drag no desktop: marca o card como 'dragging' e guarda referência
     card.addEventListener('dragstart', () => {
+        draggedCard = card;
         card.classList.add('dragging');
     });
 
     card.addEventListener('dragend', () => {
         card.classList.remove('dragging');
+        draggedCard = null;
     });
 
-    // 📱 TOUCH (CELULAR)
-
+    // Touch (celular): usa touch events para permitir mover entre dropzones
     card.addEventListener('touchstart', () => {
         draggedCard = card;
         card.classList.add('dragging');
@@ -50,10 +83,8 @@ function createCard(text, columnId) {
 
     card.addEventListener('touchmove', (e) => {
         e.preventDefault();
-
         const touch = e.touches[0];
         const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-
         const dropzone = elementBelow?.closest('.dropzone');
         if (dropzone && draggedCard) {
             dropzone.appendChild(draggedCard);
@@ -67,14 +98,17 @@ function createCard(text, columnId) {
         }
     });
 
+    // Monta o card e anexa na coluna
+    card.appendChild(textSpan);
+    card.appendChild(deleteBtn);
     document.getElementById(columnId).appendChild(card);
 }
 
-// Dropzones (PC)
+// Dropzones (desktop): permite soltar cards arrastados
 dropzones.forEach(zone => {
     zone.addEventListener('dragover', (e) => {
         e.preventDefault();
-        const draggingCard = document.querySelector('.dragging');
+        const draggingCard = document.querySelector('.dragging') || draggedCard;
         if (draggingCard) {
             zone.appendChild(draggingCard);
         }
