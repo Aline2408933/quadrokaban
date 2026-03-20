@@ -124,6 +124,7 @@ function createCard(text, columnId) {
             input.value = textSpan.innerText;
             card.innerHTML = '';
             card.appendChild(input);
+            card.appendChild(editBtn);
             card.appendChild(deleteBtn);
             input.focus();
 
@@ -131,6 +132,7 @@ function createCard(text, columnId) {
                 textSpan.innerText = input.value || 'Tarefa sem nome';
                 card.innerHTML = '';
                 card.appendChild(textSpan);
+                card.appendChild(editBtn);
                 card.appendChild(deleteBtn);
             });
         }
