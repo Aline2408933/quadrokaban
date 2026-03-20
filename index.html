@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Quadro Kanban</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Quadro Kanban</h1>
+        <div class="controls">
+            <input type="text" id="taskInput" placeholder="Nova tarefa...">
+            <button id="addTaskBtn">Adicionar Card</button>
+        </div>
+    </header>
+
+    <main class="kanban-board">
+        <div class="column" data-status="todo">
+            <h2>A Fazer</h2>
+            <div class="dropzone" id="todo"></div>
+        </div>
+
+        <div class="column" data-status="doing">
+            <h2>Fazendo</h2>
+            <div class="dropzone" id="doing"></div>
+        </div>
+
+        <div class="column" data-status="done">
+            <h2>Concluído</h2>
+            <div class="dropzone" id="done"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
