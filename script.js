@@ -21,12 +21,23 @@ themeToggleBtn.addEventListener('click', () => {
     themeToggleBtn.innerText = isDarkMode ? '☀️' : '🌙';
 });
 
-// Evento: ao clicar no botão de adicionar, cria um novo card na coluna 'todo'
-addTaskBtn.addEventListener('click', () => {
+// Função reutilizável para adicionar um nova tarefa
+function addNewTask() {
     const text = taskInput.value.trim();
     if (text) {
         createCard(text, 'todo');
         taskInput.value = '';
+        taskInput.focus();
+    }
+}
+
+// Evento: ao clicar no botão de adicionar, cria um novo card na coluna 'todo'
+addTaskBtn.addEventListener('click', addNewTask);
+
+// Evento: pressionar Enter no input também adiciona um novo card
+taskInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        addNewTask();
     }
 });
 
