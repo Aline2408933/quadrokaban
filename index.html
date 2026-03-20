@@ -15,7 +15,11 @@
 <body>
     <!-- Cabeçalho com título e controles de criação de card -->
     <header>
-        <h1>Quadro Kanban</h1>
+        <div class="header-top">
+            <h1>Quadro Kanban</h1>
+            <!-- Botão para alternar entre dark mode e light mode -->
+            <button id="themToggleBtn" class="theme-toggle" aria-label="Alternar tema">🌙</button>
+        </div>
         <div class="controls">
             <!-- Input para inserir o texto da nova tarefa -->
             <input type="text" id="taskInput" placeholder="Nova tarefa...">
