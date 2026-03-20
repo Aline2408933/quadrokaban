@@ -47,21 +47,38 @@ function createCard(text, columnId) {
 
     // Edição inline: duplo clique substitui o texto por um input
     card.addEventListener('dblclick', () => {
+        startEditing();
+    });
+
+    // Função reutilizável para iniciar a edição do card
+    function startEditing() {
         const input = document.createElement('input');
         input.value = textSpan.innerText;
-        // Substitui apenas o conteúdo de texto, preservando o botão de excluir
         card.innerHTML = '';
         card.appendChild(input);
+        // adiciona botões após o input
+        card.appendChild(editBtn);
         card.appendChild(deleteBtn);
         input.focus();
 
         input.addEventListener('blur', () => {
             textSpan.innerText = input.value || 'Tarefa sem nome';
-            // Reconstroi o conteúdo do card (texto + botão)
             card.innerHTML = '';
             card.appendChild(textSpan);
+            card.appendChild(editBtn);
             card.appendChild(deleteBtn);
         });
+    }
+
+    // Botão de editar (visível)
+    const editBtn = document.createElement('button');
+    editBtn.classList.add('edit-btn');
+    editBtn.setAttribute('aria-label', 'Editar tarefa');
+    editBtn.innerText = '✎';
+    // Clicar em editar abre o input de edição
+    editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startEditing();
     });
 
     // Drag no desktop: marca o card como 'dragging' e guarda referência
@@ -124,8 +141,9 @@ function createCard(text, columnId) {
         }
     });
 
-    // Monta o card e anexa na coluna
+    // Monta o card e anexa na coluna (texto + editar + excluir)
     card.appendChild(textSpan);
+    card.appendChild(editBtn);
     card.appendChild(deleteBtn);
     document.getElementById(columnId).appendChild(card);
 }

@@ -67,6 +67,10 @@ button {
 
     /* Importante para gestos em touch devices */
     touch-action: none;
+    /* Layout interno: texto à esquerda, botões à direita */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .card:active {
@@ -91,6 +95,8 @@ button {
 .card .card-text {
     display: inline-block;
     margin-right: 8px;
+    flex: 1 1 auto;
+    word-break: break-word;
 }
 
 /* Botão de excluir dentro do card */
@@ -106,4 +112,20 @@ button {
 
 .card .delete-btn:hover {
     background: rgba(200,0,0,0.06);
+}
+
+/* Botão de editar visível dentro do card */
+.card .edit-btn {
+    background: transparent;
+    border: none;
+    color: #007bff;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+
+.card .edit-btn:hover {
+    background: rgba(0,123,255,0.06);
 }
