@@ -1,10 +1,25 @@
 // Seleção de elementos importantes
 const taskInput = document.getElementById('taskInput');
 const addTaskBtn = document.getElementById('addTaskBtn');
+const themeToggleBtn = document.getElementById('themToggleBtn');
 const dropzones = document.querySelectorAll('.dropzone');
 
 // Variável auxiliar usada para arrastar em touch e desktop
 let draggedCard = null;
+
+// Dark mode: carrega preferência salva e alterna tema
+const savedTheme = localStorage.getItem('theme') || 'light';
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggleBtn.innerText = '☀️';
+}
+
+themeToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    themeToggleBtn.innerText = isDarkMode ? '☀️' : '🌙';
+});
 
 // Evento: ao clicar no botão de adicionar, cria um novo card na coluna 'todo'
 addTaskBtn.addEventListener('click', () => {
