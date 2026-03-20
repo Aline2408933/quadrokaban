@@ -21,6 +21,15 @@ themeToggleBtn.addEventListener('click', () => {
     themeToggleBtn.innerText = isDarkMode ? '☀️' : '🌙';
 });
 
+// Suporte a touch no iPhone para o botão de tema
+themeToggleBtn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    themeToggleBtn.innerText = isDarkMode ? '☀️' : '🌙';
+});
+
 // Função reutilizável para adicionar um nova tarefa
 function addNewTask() {
     const text = taskInput.value.trim();
@@ -39,6 +48,12 @@ taskInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         addNewTask();
     }
+});
+
+// Suporte a touch no iPhone para o botão de adicionar
+addTaskBtn.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    addNewTask();
 });
 
 /**
@@ -65,10 +80,22 @@ function createCard(text, columnId) {
     deleteBtn.setAttribute('aria-label', 'Excluir tarefa');
     deleteBtn.innerText = '✕';
 
+    // Função para remover o card
+    function removeCard() {
+        card.remove();
+    }
+
     // Evita que o clique no botão dispare eventos pais (ex.: edição ou drag)
     deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        card.remove();
+        removeCard();
+    });
+
+    // Suporte a touch no iPhone (toque direto no botão)
+    deleteBtn.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        removeCard();
     });
 
     // Edição inline: duplo clique substitui o texto por um input
@@ -104,6 +131,13 @@ function createCard(text, columnId) {
     // Clicar em editar abre o input de edição
     editBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        startEditing();
+    });
+
+    // Suporte a touch no iPhone (toque direto no botão)
+    editBtn.addEventListener('touchend', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         startEditing();
     });
 
